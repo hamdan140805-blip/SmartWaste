@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Waste Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #f4f6f4;
+            color: #303830;
+        }
+
+        .page-layout {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 65px;
+            padding: 35px;
+        }
+
+        .project-info {
+            max-width: 460px;
+        }
+
+        .project-info h1 {
+            color: #286b43;
+            font-size: 36px;
+            line-height: 1.35;
+            margin: 0 0 15px;
+        }
+
+        .project-info p {
+            color: #5c665e;
+            font-size: 16px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 390px;
+            padding: 28px;
+            background: #fff;
+            border: 1px solid #e0e5e0;
+            border-radius: 8px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            width: 50%;
+            padding: 12px 8px;
+            border: none;
+            border-bottom: 3px solid transparent;
+            background: #fff;
+            color: #555;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            color: #286b43;
+            border-bottom-color: #286b43;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 0 0 22px;
+            font-size: 23px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd1cb;
+            border-radius: 4px;
+            background: #fff;
+            color: #303830;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: 2px solid #d4e7d9;
+            border-color: #286b43;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 4px;
+            border: none;
+            border-radius: 4px;
+            background: #286b43;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #205536;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .error-message {
+            color: #a32121;
+            background: #fff0f0;
+            border: 1px solid #e8c5c5;
+        }
+
+        .success-message {
+            color: #1b6534;
+            background: #edf7ef;
+            border: 1px solid #c9e4cf;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 800px) {
+            .page-layout {
+                flex-direction: column;
+                justify-content: center;
+                gap: 25px;
+                padding: 25px 16px;
+            }
+
+            .project-info {
+                max-width: 390px;
+                text-align: center;
+            }
+
+            .project-info h1 {
+                font-size: 29px;
+            }
+
+            .project-info p {
+                font-size: 14px;
+            }
+
+            .container {
+                max-width: 390px;
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-layout">
+
+        <div class="project-info">
+            <h1>Smart Waste Management System</h1>
+
+            <p>
+                A simple system to monitor waste bins, manage
+                collection requests and improve waste collection
+                using technology.
+            </p>
+        </div>
+
+        <div class="container">
+
+            <div class="tabs">
+                <button type="button" id="login-tab"
+                    class="tab active" onclick="showForm('login')">
+                    Login
+                </button>
+
+                <button type="button" id="signup-tab"
+                    class="tab" onclick="showForm('signup')">
+                    Sign Up
+                </button>
+            </div>
+
+            <!-- Login form -->
+            <div id="login-section">
+
+                <h2>Welcome Back</h2>
+
+                <div id="error-message"
+                    class="message error-message hidden"
+                    role="alert" aria-live="polite">
+                </div>
+
+                <div id="success-message"
+                    class="message success-message hidden"
+                    role="status" aria-live="polite">
+                    Account created successfully. You can now log in.
+                </div>
+
+                <form action="../backend/login.php" method="POST">
+
+                    <div class="form-group">
+                        <label for="role">Login As</label>
+
+                        <select name="role" id="role" required>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+
+                        <input type="text" id="login-username"
+                            name="username" required
+                            autocomplete="username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+
+                        <input type="password" id="login-password"
+                            name="password" required
+                            autocomplete="current-password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="access-code">Access Code</label>
+
+                        <input type="password" id="access-code"
+                            name="access_code" required
+                            autocomplete="off">
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        Login
+                    </button>
+
+                </form>
+            </div>
+
+            <!-- Sign up form -->
+            <div id="signup-section" class="hidden">
+
+                <h2>Create Account</h2>
+
+                <form action="signup.php" method="POST">
+
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+
+                        <input type="text" id="signup-name"
+                            name="name" required
+                            pattern="[A-Za-z]+( [A-Za-z]+)+"
+                            title="Enter your first and last name using letters and a space."
+                            autocomplete="name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-username">Username</label>
+
+                        <input type="text" id="signup-username"
+                            name="username" required minlength="4"
+                            maxlength="20" autocomplete="username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+
+                        <input type="password" id="signup-password"
+                            name="password" required minlength="8"
+                            autocomplete="new-password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+
+                        <input type="password" id="confirm-password"
+                            name="confirm_password" required minlength="8"
+                            autocomplete="new-password">
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        Create Account
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function showForm(formName) {
+            const loginSection =
+                document.getElementById("login-section");
+
+            const signupSection =
+                document.getElementById("signup-section");
+
+            const loginTab =
+                document.getElementById("login-tab");
+
+            const signupTab =
+                document.getElementById("signup-tab");
+
+            document.getElementById("error-message")
+                .classList.add("hidden");
+
+            document.getElementById("success-message")
+                .classList.add("hidden");
+
+            if (formName === "signup") {
+                loginSection.classList.add("hidden");
+                signupSection.classList.remove("hidden");
+
+                loginTab.classList.remove("active");
+                signupTab.classList.add("active");
+            } else {
+                signupSection.classList.add("hidden");
+                loginSection.classList.remove("hidden");
+
+                signupTab.classList.remove("active");
+                loginTab.classList.add("active");
+            }
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const error = params.get("error");
+
+        if (error) {
+            showForm("login");
+
+            const errorMessage =
+                document.getElementById("error-message");
+
+            if (error === "access") {
+                errorMessage.textContent =
+                    "Incorrect access code. Please try again.";
+            } else {
+                errorMessage.textContent =
+                    "Invalid username, password or login role. Please try again.";
+            }
+
+            errorMessage.classList.remove("hidden");
+
+            window.history.replaceState(
+                {}, document.title, window.location.pathname
+            );
+        }
+
+        if (params.get("signup") === "success") {
+            showForm("login");
+
+            document.getElementById("success-message")
+                .classList.remove("hidden");
+
+            window.history.replaceState(
+                {}, document.title, window.location.pathname
+            );
+        }
+    </script>
+
+</body>
+</html>

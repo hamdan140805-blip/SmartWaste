@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Waste Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7f5;
+            color: #29352d;
+        }
+
+        header {
+            background: #ffffff;
+            padding: 16px 24px;
+            border-bottom: 1px solid #dce3dd;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .layout {
+            display: block;
+            min-height: calc(100vh - 54px);
+        }
+
+        /* Top navigation */
+        .sidebar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            background: #26382d;
+            padding: 0 12px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 15px 14px;
+            color: #e8eee9;
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 3px solid transparent;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #354b3c;
+            border-bottom-color: #9bc9a5;
+        }
+
+        main {
+            width: 100%;
+            padding: 28px 30px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #dce8de;
+        }
+
+        h2 {
+            margin: 0 0 8px;
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        h3 {
+            margin: 25px 0 12px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .intro {
+            margin: 0;
+            color: #6b756d;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Search */
+        .search-box {
+            display: flex;
+            gap: 8px;
+            max-width: 760px;
+        }
+
+        .search-box input {
+            flex: 1;
+            min-width: 0;
+            padding: 11px 12px;
+            border: 1px solid #cbd5cd;
+            border-radius: 4px;
+            background: #ffffff;
+            font-size: 14px;
+        }
+
+        .search-box input:focus {
+            outline: 2px solid #b8d4bf;
+            border-color: #568064;
+        }
+
+        .search-box button {
+            padding: 10px 17px;
+            border: 1px solid #395943;
+            border-radius: 4px;
+            background: #395943;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .search-box button:hover {
+            background: #294331;
+        }
+
+        .search-box .clear-button {
+            background: #ffffff;
+            color: #395943;
+        }
+
+        .search-box .clear-button:hover {
+            background: #edf4ee;
+        }
+
+        .search-info {
+            margin: 10px 0;
+            color: #6b756d;
+            font-size: 12px;
+        }
+
+        /* Summary figures - no boxes */
+        .summary {
+            display: flex;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 50px;
+            margin-top: 17px;
+            padding: 15px 0;
+            border-bottom: 1px solid #dce3dd;
+        }
+
+        .summary-card {
+            padding: 0;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+        }
+
+        .summary-card span {
+            display: block;
+            margin-bottom: 8px;
+            color: #657168;
+            font-size: 13px;
+        }
+
+        .summary-card strong {
+            display: block;
+            font-size: 27px;
+            font-weight: 600;
+            color: #304637;
+        }
+
+        .summary-card .description {
+            margin-top: 6px;
+            color: #778078;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .summary-card.selected {
+            background: transparent;
+            border: none;
+        }
+
+        .summary-card.selected span {
+            color: #28623b;
+            font-weight: bold;
+        }
+
+        .summary-card:focus-visible {
+            outline: 2px solid #568064;
+            outline-offset: 3px;
+        }
+
+        /* Bin and industry tables */
+        .bins {
+            width: 100%;
+            overflow-x: auto;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+        }
+
+        .bin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+            font-size: 13px;
+        }
+
+        .bin-table th {
+            padding: 13px 12px;
+            text-align: left;
+            color: #46564a;
+            background: #edf3ee;
+            border-bottom: 1px solid #d5dfd6;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .bin-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #e5e9e5;
+            vertical-align: middle;
+        }
+
+        .bin-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .bin-table tbody tr:hover {
+            background: #f0f5f0;
+        }
+
+        .bin-id {
+            font-weight: bold;
+            white-space: nowrap;
+            color: #304637;
+        }
+
+        .waste-level {
+            min-width: 115px;
+        }
+
+        .bar {
+            width: 90px;
+            height: 6px;
+            margin-top: 7px;
+            overflow: hidden;
+            background: #e5e9e5;
+            border-radius: 3px;
+        }
+
+        .bar div {
+            height: 100%;
+            background: #568064;
+            border-radius: 3px;
+        }
+
+        .status {
+            white-space: nowrap;
+        }
+
+        .prediction-value {
+            font-weight: bold;
+        }
+
+        .prediction-note {
+            display: block;
+            margin-top: 4px;
+            color: #778078;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .message {
+            padding: 15px 0;
+            color: #657168;
+            font-size: 13px;
+        }
+
+        @media (max-width: 950px) {
+            main {
+                padding: 22px 18px;
+            }
+
+            .sidebar a {
+                padding: 13px 10px;
+                font-size: 13px;
+            }
+
+            .summary {
+                gap: 25px;
+            }
+
+            .bin-table {
+                min-width: 700px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                padding: 0;
+            }
+
+            .sidebar a {
+                padding: 12px 9px;
+                font-size: 12px;
+            }
+
+            main {
+                padding: 20px 12px;
+            }
+
+            .summary {
+                gap: 22px;
+            }
+
+            .search-box {
+                flex-wrap: wrap;
+            }
+
+            .search-box input {
+                flex-basis: 100%;
+            }
+
+            .bin-table {
+                min-width: 700px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>Smart Waste Management System</header>
+
+<div class="layout">
+
+    <nav class="sidebar">
+        <a class="active" href="dashboard.html">Dashboard</a>
+        <a href="industry_requests.php">Industry Requests</a>
+        <a href="collection.php">Collection</a>
+        <a href="reports.php">Reports</a>
+        <a href="prediction.php">ML Prediction</a>
+        <a href="search.php">Search</a>
+        <a href="bins.php">All Bins</a>
+        <a href="index.html"
+           onclick="return confirm('Return to the login page?')">Logout</a>
+    </nav>
+
+    <main>
+        <div class="page-heading">
+            <h2>Dashboard</h2>
+            <p class="intro">
+                Monitor waste levels, find bins by location and identify bins
+                that may need collection.
+            </p>
+        </div>
+
+        <h3>Search Bins</h3>
+
+        <div class="search-box">
+            <input type="search" id="binSearch"
+                   placeholder="Enter bin ID or location..."
+                   aria-label="Search bins">
+
+            <button type="button" id="searchButton">Search</button>
+            <button type="button" id="clearButton"
+                    class="clear-button">Clear</button>
+        </div>
+
+        <p id="searchInfo" class="search-info">
+            Loading bin information...
+        </p>
+
+        <h3>System Overview</h3>
+        <p class="intro">Select a category to view the matching bins.</p>
+
+        <div class="summary">
+            <div class="summary-card selected"
+                 role="button" tabindex="0" data-filter="all"
+                 aria-pressed="true">
+                <span>Total Bins</span>
+                <strong id="total">—</strong>
+                <div class="description">All registered bins</div>
+            </div>
+
+            <div class="summary-card"
+                 role="button" tabindex="0" data-filter="filled"
+                 aria-pressed="false">
+                <span>Filled Bins</span>
+                <strong id="filled">—</strong>
+                <div class="description">75% or more full</div>
+            </div>
+
+            <div class="summary-card"
+                 role="button" tabindex="0" data-filter="partial"
+                 aria-pressed="false">
+                <span>Partly Filled</span>
+                <strong id="partial">—</strong>
+                <div class="description">Above 0%, below 75%</div>
+            </div>
+
+            <div class="summary-card"
+                 role="button" tabindex="0" data-filter="empty"
+                 aria-pressed="false">
+                <span>Empty Bins</span>
+                <strong id="empty">—</strong>
+                <div class="description">0% recorded waste</div>
+            </div>
+        </div>
+
+        <h3>Bin Monitoring</h3>
+        <p class="intro" style="margin-bottom: 12px;">
+            Current waste levels are shown below. ML predictions are
+            prototype estimates based on sample data.
+        </p>
+
+        <div id="binList" class="bins">
+            <p class="message">Loading bins...</p>
+        </div>
+
+        <h3>Industry Collection Requests</h3>
+        <p class="intro" style="margin-bottom: 12px;">
+            View industry waste collection requests, deadlines and scheduled collections.
+        </p>
+
+        <div id="industryRequests" class="bins">
+            <p class="message">Loading industry requests...</p>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    let allBins = [];
+    let activeFilter = "all";
+
+    // Sample predictions for the project demonstration.
+    const predictions = {
+        1: 43.5,
+        2: 93.5,
+        3: 100
+    };
+
+    const binList = document.getElementById("binList");
+    const searchInput = document.getElementById("binSearch");
+    const searchInfo = document.getElementById("searchInfo");
+
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        }[character]));
+    }
+
+    function getFill(bin) {
+        const value = Number(bin.fill_level ?? 0);
+
+        if (!Number.isFinite(value)) {
+            return 0;
+        }
+
+        return Math.max(0, Math.min(100, value));
+    }
+
+    function getStatus(bin) {
+        const fill = getFill(bin);
+
+        if (fill === 0) return "Empty";
+        if (fill >= 75) return "Filled";
+
+        return "Partly Filled";
+    }
+
+    function getBinLabel(bin) {
+        return "BIN-" + String(bin.bin_id).padStart(3, "0");
+    }
+
+    function renderBins(bins) {
+        if (bins.length === 0) {
+            binList.innerHTML =
+                '<p class="message">No matching bins found. Try another search.</p>';
+            return;
+        }
+
+        const rows = bins.map(bin => {
+            const label = getBinLabel(bin);
+            const fill = getFill(bin);
+            const location = escapeHTML(bin.location || "Unknown");
+            const status = getStatus(bin);
+            const prediction = predictions[Number(bin.bin_id)];
+
+            const predictionText = prediction !== undefined
+                ? prediction.toFixed(1) + "%"
+                : "Not available";
+
+            const predictionNote = prediction !== undefined
+                ? "Sample-data estimate"
+                : "No prediction configured";
+
+            return `
+                <tr>
+                    <td class="bin-id">${escapeHTML(label)}</td>
+                    <td>${location}</td>
+                    <td class="waste-level">
+                        ${fill}%
+                        <div class="bar">
+                            <div style="width: ${fill}%"></div>
+                        </div>
+                    </td>
+                    <td class="status">${status}</td>
+                    <td>
+                        <span class="prediction-value">${predictionText}</span>
+                        <span class="prediction-note">${predictionNote}</span>
+                    </td>
+                </tr>
+            `;
+        }).join("");
+
+        binList.innerHTML = `
+            <table class="bin-table">
+                <thead>
+                    <tr>
+                        <th>Bin ID</th>
+                        <th>Location</th>
+                        <th>Waste Level</th>
+                        <th>Status</th>
+                        <th>ML Prediction</th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>
+        `;
+    }
+
+    function applyFilters() {
+        const query = searchInput.value.trim().toLowerCase();
+
+        let filtered = allBins.filter(bin => {
+            const label = getBinLabel(bin).toLowerCase();
+            const id = String(bin.bin_id ?? "").toLowerCase();
+            const location = String(bin.location ?? "").toLowerCase();
+
+            return label.includes(query) ||
+                   id.includes(query) ||
+                   location.includes(query);
+        });
+
+        if (activeFilter === "filled") {
+            filtered = filtered.filter(
+                bin => getStatus(bin) === "Filled"
+            );
+        } else if (activeFilter === "partial") {
+            filtered = filtered.filter(
+                bin => getStatus(bin) === "Partly Filled"
+            );
+        } else if (activeFilter === "empty") {
+            filtered = filtered.filter(
+                bin => getStatus(bin) === "Empty"
+            );
+        }
+
+        renderBins(filtered);
+
+        const categoryNames = {
+            all: "bins",
+            filled: "filled bins",
+            partial: "partly filled bins",
+            empty: "empty bins"
+        };
+
+        searchInfo.textContent = query
+            ? `${filtered.length} matching ${categoryNames[activeFilter]} found.`
+            : `Showing ${filtered.length} ${categoryNames[activeFilter]}.`;
+    }
+
+    function selectFilter(filter) {
+        activeFilter = filter;
+
+        document.querySelectorAll(".summary-card").forEach(card => {
+            const selected = card.dataset.filter === filter;
+
+            card.classList.toggle("selected", selected);
+            card.setAttribute("aria-pressed", String(selected));
+        });
+
+        applyFilters();
+    }
+
+    document.querySelectorAll(".summary-card").forEach(card => {
+        card.addEventListener("click", () => {
+            selectFilter(card.dataset.filter);
+        });
+
+        card.addEventListener("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                selectFilter(card.dataset.filter);
+            }
+        });
+    });
+
+    document.getElementById("searchButton")
+        .addEventListener("click", applyFilters);
+
+    searchInput.addEventListener("input", applyFilters);
+
+    document.getElementById("clearButton").addEventListener("click", () => {
+        searchInput.value = "";
+        selectFilter("all");
+        searchInput.focus();
+    });
+
+    // Load bin records from the existing PHP backend.
+    fetch("../backend/get_bins.php")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Could not load bins.");
+            }
+
+            return response.json();
+        })
+        .then(data => {
+            allBins = Array.isArray(data) ? data : (data.bins || []);
+
+            document.getElementById("total").textContent = allBins.length;
+
+            document.getElementById("filled").textContent =
+                allBins.filter(bin => getStatus(bin) === "Filled").length;
+
+            document.getElementById("partial").textContent =
+                allBins.filter(bin => getStatus(bin) === "Partly Filled").length;
+
+            document.getElementById("empty").textContent =
+                allBins.filter(bin => getStatus(bin) === "Empty").length;
+
+            applyFilters();
+        })
+        .catch(error => {
+            binList.innerHTML =
+                '<p class="message">Could not load bins. Check the database connection and get_bins.php.</p>';
+
+            searchInfo.textContent = "Bin information could not be loaded.";
+
+            console.error(error);
+        });
+
+    // Load industry requests from the backend.
+    fetch("../backend/get_industry_requests.php")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Could not load industry requests.");
+            }
+
+            return response.json();
+        })
+        .then(data => {
+            const container = document.getElementById("industryRequests");
+
+            if (!Array.isArray(data)) {
+                throw new Error("Unexpected industry request data.");
+            }
+
+            if (data.length === 0) {
+                container.innerHTML =
+                    '<p class="message">No industry requests found.</p>';
+                return;
+            }
+
+            const rows = data.map(request => `
+                <tr>
+                    <td>${escapeHTML(request.industry_name)}</td>
+                    <td>${escapeHTML(request.collection_areas)}</td>
+                    <td>${escapeHTML(request.waste_quantity)} kg</td>
+                    <td>${escapeHTML(request.contact_name)}</td>
+                    <td>${escapeHTML(request.requested_deadline)}</td>
+                    <td>${escapeHTML(request.scheduled_collection_date)}</td>
+                    <td>${escapeHTML(request.scheduled_collection_time)}</td>
+                    <td>${escapeHTML(request.priority)}</td>
+                    <td>${escapeHTML(request.status)}</td>
+                </tr>
+            `).join("");
+
+            container.innerHTML = `
+                <table class="bin-table">
+                    <thead>
+                        <tr>
+                            <th>Industry</th>
+                            <th>Collection Areas</th>
+                            <th>Quantity</th>
+                            <th>Contact Person</th>
+                            <th>Deadline</th>
+                            <th>Scheduled Date</th>
+                            <th>Collection Time</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            `;
+        })
+        .catch(error => {
+            document.getElementById("industryRequests").innerHTML =
+                '<p class="message">Could not load industry requests. Check get_industry_requests.php and the database table.</p>';
+
+            console.error(error);
+        });
+</script>
+
+</body>
+</html>
